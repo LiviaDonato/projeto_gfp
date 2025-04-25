@@ -1,6 +1,6 @@
 import { BD } from '../db.js'
 
-class LocalTransacao {
+class Categorias {
     // Função estatica para novo local de transacao
     static async novaCategoria(nome, tipo_transacao, gasto_fixo, id_usuario) {
         const resultado = await BD.query(`INSERT INTO categorias(nome, tipo_transacao, gasto_fixo, id_usuario)
@@ -8,15 +8,15 @@ class LocalTransacao {
         return resultado.rows[0]
     }
     static async listar() {
-        const resultado = await BD.query('SELECT * FROM categorias WHERE ativo = true')
+        const resultado = await BD.query('SELECT c.nome, c.tipo_transacao, c.gasto_fixo, c.id_usuario, c.id_categoria, u.nome FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE ativo = true')
         return resultado.rows // retornar todos os local de transacao
     }
     static async consultar(id_categoria) {
-        const resultado = await BD.query('SELECT * FROM categorias WHERE id_categoria = $1 AND ativo = true', [id_categoria])
+        const resultado = await BD.query('SELECT c.nome, c.tipo_transacao, c.gasto_fixo, c.id_usuario, c.id_categoria, u.nome FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE id_categoria = $1 AND ativo = true', [id_categoria])
         return resultado.rows
     }
     static async atualizarTodos(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria) {
-        const resultado = await BD.query('UPDATE categorias SET nome = $1, tipo_transacao = $2, gasto_fixo = $3, id_usuario WHERE id_categoria = $4 RETURNING *',
+        const resultado = await BD.query('UPDATE categorias SET nome = $1, tipo_transacao = $2, gasto_fixo = $3, id_usuario = $4 WHERE id_categoria = $5 RETURNING *',
             [nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria]) // Comando SQL para atualizar o categoria
         return resultado.rows[0]
     }
@@ -57,9 +57,9 @@ class LocalTransacao {
         return resultado.rows[0]
     }
     static async deletar(id_categoria) {
-        const resultado = await BD.query('UPDATE categoria SET ativo = false WHERE id_categoria = $1 RETURNING *', [id_categoria])
+        const resultado = await BD.query('UPDATE categorias SET ativo = false WHERE id_categoria = $1 RETURNING *', [id_categoria])
         return resultado.rows[0]
     }
 }
 
-export default LocalTransacao
+export default Categorias

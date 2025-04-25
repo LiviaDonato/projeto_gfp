@@ -3,7 +3,7 @@ import bcrypt from "bcrypt"
 import Usuario from "../models/usuario.js"
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = 'chave_api_livro_aberto'
+const SECRET_KEY = 'chave_api_gfp'
 
 class UsuarioController {
     static async novoUsuario(req, res) {
@@ -58,10 +58,8 @@ class UsuarioController {
         const { id_usuario } = req.params
         const { nome, email, senha, tipo_acesso } = req.body
 
-        const saltRounds = 10
-        const senhaCriptografada = await bcrypt.hash(senha, saltRounds)
         try {
-            const usuarios = await Usuario.atualizar(nome, email, senhaCriptografada, tipo_acesso, id_usuario) // Chamar o metodo atualizar na model usuario
+            const usuarios = await Usuario.atualizar(nome, email, senha, tipo_acesso, id_usuario) // Chamar o metodo atualizar na model usuario
             return res.status(200).json(usuarios) // Retorna a lista de usuarios
         } catch(error) {
             res.status(500).json({message: 'Erro ao atualizar os usuarios', error: error.message})
@@ -82,26 +80,26 @@ class UsuarioController {
         const { email, senha } = req.body
 
         try {
-            const resultado = await BD.query('SELECT id_usuario, nome, email, senha FROM usuarios WHERE email = $1', [email])
+            const resultado = await BD.query('SELECT * FROM usuarios WHERE email = $1 AND ativo = true', [email])
             if (resultado.rows.length === 0) {
-                return res.status(401).json({message: 'Email e senha inválidos'})
+                return res.status(401).json({message: 'Email ou senha inválidos'})
             }
             const usuario = resultado.rows[0]
             const senhaValida = await bcrypt.compare(senha, usuario.senha)
 
             if(!senhaValida) {
-                return res.status(401).json('Email ou senha invalido')
+                return res.status(401).json('Senha incorreta')
             }
             // Gerar um novo token para o usuário
             const token = jwt.sign(
                 // Payload
                 {id_usuario: usuario.id_usuario, nome: usuario.nome, email: usuario.email},
                 // Signature
-                SECRET_KEY, {expiresIn: '1h'}
+                SECRET_KEY, /*{expiresIn: '1h'}*/
             )
 
             // res.status(200).json({message: 'Login realizado com sucesso', usuario})
-            res.status(200).json({message: 'Login realizado com sucesso', usuario, token})
+            res.status(200).json({message: 'Login realizado com sucesso', token, id_usuario: usuario.id_usuario, nome: usuario.nome, email: usuario.email, tipo_acesso: usuario.tipo_acesso})
         } catch(error) {
             console.error('Erro ao realizar login: ', error)
             return res.status(500).json({message: 'Erro ao realizar login: ', error: error.message})

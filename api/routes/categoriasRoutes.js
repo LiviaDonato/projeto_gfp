@@ -1,13 +1,14 @@
 import express from "express"
-import CategoriaController from "../controllers/categoriasController.js"
+import CategoriasController from "../controllers/categoriasController.js"
+import { autenticarToken } from "../controllers/usuarioController.js"
 
 const router = express.Router()
 
-router.post('/categorias', CategoriaController.novaCategoria)
-router.get('/categorias', CategoriaController.listar)
-router.get('/categorias/:id_categoria', CategoriaController.consultar)
-router.put('/categorias/:id_categoria', CategoriaController.atualizarTodos)
-router.patch('/categorias/:id_categoria', CategoriaController.atualizar)
-router.delete('/categorias/:id_categoria', CategoriaController.deletar)
+router.post('/categorias', autenticarToken, CategoriasController.novaCategoria)
+router.get('/categorias', autenticarToken, CategoriasController.listar)
+router.get('/categorias/:id_categoria', autenticarToken, CategoriasController.consultar)
+router.put('/categorias/:id_categoria', autenticarToken, CategoriasController.atualizarTodos)
+router.patch('/categorias/:id_categoria', autenticarToken, CategoriasController.atualizar)
+router.delete('/categorias/:id_categoria', autenticarToken, CategoriasController.deletar)
 
 export default router

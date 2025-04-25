@@ -1,13 +1,14 @@
 import express from "express"
-import LocalTransacaoController from "../controllers/localTransacaoController.js"
+import TransacaoController from "../controllers/transacaoController.js"
+import { autenticarToken } from "../controllers/usuarioController.js"
 
 const router = express.Router()
 
-router.post('/localTransacao', LocalTransacaoController.novoLocalTransacao)
-router.get('/localTransacao', LocalTransacaoController.listar)
-router.get('/localTransacao/:id_local_transacao', LocalTransacaoController.consultar)
-router.put('/localTransacao/:id_local_transacao', LocalTransacaoController.atualizarTodos)
-router.patch('/localTransacao/:id_local_transacao', LocalTransacaoController.atualizar)
-router.delete('/localTransacao/:id_local_transacao', LocalTransacaoController.deletar)
+router.post('/transacao', autenticarToken, TransacaoController.novaTransacao)
+router.get('/transacao', autenticarToken, TransacaoController.listar)
+router.get('/transacao/:id_transacao', autenticarToken, TransacaoController.consultar)
+router.put('/transacao/:id_transacao', autenticarToken, TransacaoController.atualizarTodos)
+router.patch('/transacao/:id_transacao', autenticarToken, TransacaoController.atualizar)
+router.delete('/transacao/:id_transacao', autenticarToken, TransacaoController.deletar)
 
 export default router

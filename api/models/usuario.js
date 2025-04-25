@@ -20,7 +20,7 @@ class Usuario {
             [nome, email, senhaCriptografada, tipo_acesso, id_usuario]) // Comando SQL para atualizar o usuario
         return resultado.rows[0]
     }
-    static async atualizar(nome, email, senhaCriptografada, tipo_acesso, id_usuario) {
+    static async atualizar(nome, email, senha, tipo_acesso, id_usuario) {
         // Inicializar arrays(vetores) para armazenar os campos e vetores a serem atualizados
         const campos = []
         const valores = []
@@ -34,8 +34,10 @@ class Usuario {
             campos.push(`email = $${valores.length + 1}`) // Usa o tamanho da array para determinar o campo
             valores.push(email)
         }
-        if (senhaCriptografada !== undefined) {
+        if (senha !== undefined) {
             campos.push(`senha = $${valores.length + 1}`) // Usa o tamanho da array para determinar o campo
+            const saltRounds = 10
+            const senhaCriptografada = await bcrypt.hash(senha, saltRounds)
             valores.push(senhaCriptografada)
         }
         if (tipo_acesso !== undefined) {
