@@ -2,10 +2,10 @@ import express from 'express'
 import { testarConexao } from './db.js'
 import cors from 'cors'
 import UsuarioRoutes from './routes/usuarioRoutes.js'
-import LocalTransacaoRoutes from './routes/localTransacaoRoutes.js'
-import Categorias from './routes/categoriasRoutes.js'
-import SubCategorias from './routes/subCategoriasRoutes.js'
-import Transacao from './routes/transacaoRoutes.js'
+import ContaRoutes from './routes/contasRoutes.js'
+import CategoriasRoutes from './routes/categoriasRoutes.js'
+import SubCategoriasRoutes from './routes/subCategoriasRoutes.js'
+import TransacaoRoutes from './routes/transacaoRoutes.js'
 
 const app = express()
 testarConexao()
@@ -21,16 +21,16 @@ app.get('/', (req, res) => {
 app.use(UsuarioRoutes)
 
 // Definir as rotas de local de transacao importadas no arquivo
-app.use(LocalTransacaoRoutes)
+app.use(ContaRoutes)
 
 // Definir as rotas de categorias importadas no arquivo
-app.use(Categorias)
+app.use(CategoriasRoutes)
 
 // Definir as rotas de subcategorias importadas no arquivo
-app.use(SubCategorias)
+app.use(SubCategoriasRoutes)
 
 // Definir as rotas de transacao importadas no arquivo
-app.use(Transacao)
+app.use(TransacaoRoutes)
 
 // Define a porta do servidor
 const porta = 3000;

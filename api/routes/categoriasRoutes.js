@@ -4,6 +4,7 @@ import { autenticarToken } from "../controllers/usuarioController.js"
 
 const router = express.Router()
 
+router.get('/categorias/filtrarCategoria', autenticarToken, CategoriasController.filtrarCategoria)
 router.post('/categorias', autenticarToken, CategoriasController.novaCategoria)
 router.get('/categorias', autenticarToken, CategoriasController.listar)
 router.get('/categorias/:id_categoria', autenticarToken, CategoriasController.consultar)

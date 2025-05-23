@@ -8,11 +8,11 @@ class Categorias {
         return resultado.rows[0]
     }
     static async listar() {
-        const resultado = await BD.query('SELECT c.nome, c.tipo_transacao, c.gasto_fixo, c.id_usuario, c.id_categoria, u.nome FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE ativo = true')
+        const resultado = await BD.query('SELECT c.nome, c.*, u.nome FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE c.ativo = true')
         return resultado.rows // retornar todos os local de transacao
     }
     static async consultar(id_categoria) {
-        const resultado = await BD.query('SELECT c.nome, c.tipo_transacao, c.gasto_fixo, c.id_usuario, c.id_categoria, u.nome FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE id_categoria = $1 AND ativo = true', [id_categoria])
+        const resultado = await BD.query('SELECT c.*, u.nome FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE id_categoria = $1 AND c.ativo = true', [id_categoria])
         return resultado.rows
     }
     static async atualizarTodos(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria) {
@@ -59,6 +59,12 @@ class Categorias {
     static async deletar(id_categoria) {
         const resultado = await BD.query('UPDATE categorias SET ativo = false WHERE id_categoria = $1 RETURNING *', [id_categoria])
         return resultado.rows[0]
+    }
+    static async filtrar(tipo_transacao) {
+        const query = `SELECT * FROM categorias WHERE tipo_transacao = $1 AND ativo = true ORDER BY nome DESC`
+        const valores = [tipo_transacao]
+        const resultado = await BD.query(query, valores)
+        return resultado.rows
     }
 }
 

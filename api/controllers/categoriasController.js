@@ -1,6 +1,6 @@
 import Categorias from "../models/categorias.js"
 
-class SubCategoriasController {
+class CategoriasController {
     static async novaCategoria(req, res) {
         const { nome, tipo_transacao, gasto_fixo, id_usuario } = req.body
 
@@ -69,24 +69,15 @@ class SubCategoriasController {
 
     // filtar por tipo de categoria
     static async filtrarCategoria(req, res) {
-        // O valor sera enviado por parametro por url, deve ser enviado dessa maneira
-        // ?tipo_transacao=entrada
         const { tipo_transacao } = req.query
-
         try {
-            const filtros = []
-            const valores = []
-            if (tipo_transacao) {
-                filtros.push(`tipo_transacao = $${valores.length + 1}`)
-                valores.push(tipo_transacao)
-            }
-            const query = `SELECT * FROM categorias ${filtros.length ? `WHERE ${filtros.join(" AND ")}` : ""} AND ativo = true ORDER BY id_categoria DESC`
-            const resultado = await BD.query(query, valores)
-
+            const categorias = await Categorias.filtrar(tipo_transacao) // Chamar o metodo deletar na model categoria
+            return res.status(200).json(categorias) // Retorna a lista de categoria
         } catch(error) {
-            
+            console.error('Erro ao filtrar categoria', error)
+            return res.status(500).json({message: 'Erro ao filtrar categoria', error: error.message})
         }
     }
 }
 
-export default SubCategoriasController
+export default CategoriasController

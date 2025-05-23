@@ -1,10 +1,25 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { enderecoServidor } from "../utils"
+import { useNavigate } from "react-router-dom";
 
-const Aula14_Login = () => {
+const Login = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
-    const [mensagem, setMensagem] = useState("")
+    const [lembrar, setLembrar] = useState(false);
+
+    useEffect(() => {
+        const buscarUsuarioLogado = async () => {
+            const UsuarioLogado = await localStorage.getItem("UsuarioLogado");
+            if (UsuarioLogado) {
+                const usuario = JSON.parse(UsuarioLogado);
+                if (usuario.lembrar === true) {
+                    navigate("/principal");
+                }
+            }
+        };
+        buscarUsuarioLogado();
+    }, [[navigate]])
 
     async function botaoEntrar(e) {
         e.preventDefault()
@@ -22,10 +37,9 @@ const Aula14_Login = () => {
 
             if (resposta.ok) {
                 const dados = await resposta.json()
-                setMensagem('✅ Login bem-sucedido!')
-                localStorage.setItem('UsuarioLogado', JSON.stringify(dados))
+                localStorage.setItem('UsuarioLogado', JSON.stringify({ ...dados, lembrar }))
+                navigate("/Principal")
             } else {
-                setMensagem('❌ Email ou senha incorretos')
                 throw new Error('Email ou senha incorretos')
             }
 
@@ -37,7 +51,6 @@ const Aula14_Login = () => {
 
     return (
         <div style={estilos.container}>
-            {/* LADO ESQUERDO - LOGIN */}
             <div style={estilos.metadeEsquerda}>
                 <div style={estilos.card}>
                     <h2 style={estilos.titulo}>Login</h2>
@@ -57,19 +70,17 @@ const Aula14_Login = () => {
                         placeholder="Digite sua senha"
                         style={estilos.input}
                     />
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={lembrar}
+                            onChange={(e) => setLembrar(e.target.checked)}
+                        />
+                        Lembrar-me
+                    </label>
                     <button onClick={botaoEntrar} style={estilos.botao}>Entrar</button>
-                    <button onClick={() => {
-                        setEmail("");
-                        setSenha("");
-                        setMensagem("");
-                    }} style={{ ...estilos.botao, backgroundColor: '#75b5ce' }}>
-                        Limpar
-                    </button>
-                    {mensagem && <p style={estilos.mensagem}>{mensagem}</p>}
                 </div>
             </div>
-
-            {/* LADO DIREITO - DIV EXTRA */}
             <div style={estilos.metadeDireita}>
                 <h1 style={{ color: '#fff' }}>Bem-vindo à plataforma GFP!</h1>
             </div>
@@ -89,11 +100,11 @@ const estilos = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#DDA0DD'
+        backgroundColor: '#663399'
     },
     metadeDireita: {
         width: '40%',
-        backgroundColor: '#75b5ce',
+        backgroundColor: '#25003d',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -108,25 +119,25 @@ const estilos = {
         backgroundColor: '#fff',
         display: 'flex',
         flexDirection: 'column',
-        gap: '15px'
+        gap: '10px'
     },
     titulo: {
         textAlign: 'center',
         marginBottom: '10px',
-        color: '#8c2fa3',
+        color: '#6a6ab0',
         fontSize: '35px'
     },
     input: {
         height: '40px',
-        padding: '0 10px',
+        padding: '10 10px',
         borderRadius: '6px',
         border: '1px solid #ccc',
         fontSize: '16px',
-        backgroundColor: '#FFF0F5'
+        backgroundColor: '#E6E6FA'
     },
     botao: {
         height: '40px',
-        backgroundColor: '#BA55D3',
+        backgroundColor: '#6a6ab0',
         color: '#fff',
         border: 'none',
         borderRadius: '6px',
@@ -140,4 +151,4 @@ const estilos = {
     }
 }
 
-export default Aula14_Login
+export default Login

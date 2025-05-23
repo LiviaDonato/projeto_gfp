@@ -4,6 +4,9 @@ import { autenticarToken } from "../controllers/usuarioController.js"
 
 const router = express.Router()
 
+router.get('/transacao/filtrodata', autenticarToken, TransacaoController.filtrarData)
+router.get('/transacao/somarTransacoes', autenticarToken, TransacaoController.somarTransacoes)
+router.get('/transacao/transacoesVencidas/:id_usuario', autenticarToken, TransacaoController.transacoesVencidas)
 router.post('/transacao', autenticarToken, TransacaoController.novaTransacao)
 router.get('/transacao', autenticarToken, TransacaoController.listar)
 router.get('/transacao/:id_transacao', autenticarToken, TransacaoController.consultar)

@@ -1,13 +1,35 @@
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Switch,
+  TouchableOpacity,
+} from "react-native";
 import { enderecoServidor } from "../utils";
 import asyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
 // Recebemos como props o navigation para navegar entre as telas
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [lembrar, setLembrar] = useState(false);
+
+  useEffect(() => {
+    const buscarUsuarioLogado = async () => {
+      const UsuarioLogado = await asyncStorage.getItem("UsuarioLogado");
+      if (UsuarioLogado) {
+        const usuario = JSON.parse(UsuarioLogado);
+        if (usuario.lembrar == true) {
+          navigation.navigate("MenuDrawer");
+        }
+      }
+    };
+    buscarUsuarioLogado();
+  }, []);
 
   async function botaoEntrar() {
     try {
@@ -23,8 +45,11 @@ const Login = ({ navigation }) => {
 
       if (resposta.ok) {
         const dados = await resposta.json();
-        asyncStorage.setItem("UsuarioLogado", JSON.stringify(dados));
-        navigation.navigate('Principal')
+        asyncStorage.setItem(
+          "UsuarioLogado",
+          JSON.stringify({ ...dados, lembrar })
+        );
+        navigation.replace("MenuDrawer");
       } else {
         throw new Error("Email ou senha incorretos");
       }
@@ -58,7 +83,23 @@ const Login = ({ navigation }) => {
         value={senha}
         secureTextEntry
       />
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%", // <-- ESSENCIAL
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+          <Switch value={lembrar} onValueChange={setLembrar} />
+          <Text style={{ color: "#ccc" }}>Lembrar-me</Text>
+        </View>
 
+        <TouchableOpacity>
+          <Text style={{ color: "#ccc" }}>Esqueceu a senha?</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.buttonContainer}>
         <Button title="Acessar" color="#6a6ab0" onPress={botaoEntrar} />
       </View>
