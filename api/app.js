@@ -6,6 +6,8 @@ import ContaRoutes from './routes/contasRoutes.js'
 import CategoriasRoutes from './routes/categoriasRoutes.js'
 import SubCategoriasRoutes from './routes/subCategoriasRoutes.js'
 import TransacaoRoutes from './routes/transacaoRoutes.js'
+import swaggerUi from 'swagger-ui-express'
+import swaggerSpec from './swagger.js'
 
 const app = express()
 testarConexao()
@@ -13,8 +15,10 @@ testarConexao()
 app.use(cors())
 app.use(express.json())
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
 app.get('/', (req, res) => {
-    res.send('API Funcionando!')
+    res.redirect('/api-docs')
 })
 
 // Definir as rotas de usuario importadas no arquivo

@@ -2,11 +2,10 @@ import Categorias from "../models/categorias.js"
 
 class CategoriasController {
     static async novaCategoria(req, res) {
-        const { nome, tipo_transacao, gasto_fixo, id_usuario } = req.body
-
+        const { nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone } = req.body
         try {
             // Chama o metodo na classe Categoria para criar um novo categoria
-            const categorias = await Categorias.novaCategoria(nome, tipo_transacao, gasto_fixo, id_usuario)
+            const categorias = await Categorias.novaCategoria(nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone)
             return res.status(201).json(categorias) // Retorna o categoria criado com status
         } catch(error) {
             console.error('Erro ao criar o categoria', error)
@@ -35,10 +34,10 @@ class CategoriasController {
 
     static async atualizarTodos(req, res) {
         const { id_categoria } = req.params
-        const { nome, tipo_transacao, gasto_fixo, id_usuario } = req.body
+        const { nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone } = req.body
 
         try {
-            const categorias = await Categorias.atualizarTodos(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria) // Chamar o metodo atualizar na model categoria
+            const categorias = await Categorias.atualizarTodos(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria, cor, icone) // Chamar o metodo atualizar na model categoria
             return res.status(200).json(categorias) // Retorna a lista de categoria
         } catch(error) {
             return res.status(500).json({message: 'Erro ao atualizar todos as categorias', error: error.message})
@@ -47,10 +46,10 @@ class CategoriasController {
 
     static async atualizar(req, res) {
         const { id_categoria } = req.params
-        const { nome, tipo_transacao, gasto_fixo, id_usuario } = req.body
+        const { nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone } = req.body
 
         try {
-            const categorias = await Categorias.atualizar(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria) // Chamar o metodo atualizar na model categoria
+            const categorias = await Categorias.atualizar(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria, cor, icone) // Chamar o metodo atualizar na model categoria
             return res.status(200).json(categorias) // Retorna a lista de categoria
         } catch(error) {
             res.status(500).json({message: 'Erro ao atualizar as categorias', error: error.message})
