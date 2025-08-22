@@ -8,11 +8,11 @@ class Contas {
         return resultado.rows[0]
     }
     static async listar() {
-        const resultado = await BD.query('SELECT * FROM contas WHERE ativo = true')
+        const resultado = await BD.query('SELECT * FROM contas WHERE ativo = true ORDER BY nome')
         return resultado.rows // retornar todos os local de transacao
     }
     static async consultar(id_conta) {
-        const resultado = await BD.query('SELECT * FROM contas WHERE id_conta = $1 AND ativo = true', [id_conta])
+        const resultado = await BD.query('SELECT * FROM contas WHERE id_conta = $1 AND ativo = true ORDER BY nome', [id_conta])
         return resultado.rows
     }
     static async atualizarTodos(nome, tipo_conta, saldo, conta_padrao, id_conta) {

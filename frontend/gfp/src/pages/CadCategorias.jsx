@@ -5,7 +5,7 @@ import { MdCreditCard, MdSave, MdClose } from "react-icons/md"
 import Estilos from "../styles/Estilos"
 import { enderecoServidor } from "../utils"
 
-export default function CadContas() {
+export default function CadCategorias() {
     const navigate = useNavigate()
     const location = useLocation()
     const { dadosUsuario } = useContext(UsuarioContext)
@@ -34,11 +34,11 @@ export default function CadContas() {
             saldo: parseFloat(saldoInicial) || 0
         }
         try {
-            let endpoint = `${enderecoServidor}/contas`
+            let endpoint = `${enderecoServidor}/categorias`
             let metodo = 'POST'
 
             if (itemAlterar) {
-                endpoint = `${enderecoServidor}/contas/${itemAlterar.id_conta}`
+                endpoint = `${enderecoServidor}/categorias/${itemAlterar.id_categoria}`
                 metodo = 'PATCH'
             }
 
@@ -48,7 +48,7 @@ export default function CadContas() {
             })
             if (resposta.ok) {
                 alert('Conta cadastrada com sucesso!')
-                navigate('/contas')
+                navigate('/categorias')
             }
         } catch (error) {
             alert("Erro ao salvar conta: " + error.message)
@@ -69,7 +69,7 @@ export default function CadContas() {
 
                 {/* Formulário */}
                 <div className="space-y-5">
-                    <label className={Estilos.labelCadastro}>Nome da Conta</label>
+                    <label className={Estilos.labelCadastro}>Nome da Categoria</label>
                     <input
                         type="text"
                         value={nome}
@@ -78,7 +78,7 @@ export default function CadContas() {
                         className={Estilos.inputCadastro}
                     />
 
-                    <label className={Estilos.labelCadastro}>Tipo de Conta</label>
+                    <label className={Estilos.labelCadastro}>Tipo de Categoria</label>
                     <select
                         value={tipoConta}
                         onChange={(e) => setTipoConta(e.target.value)}
@@ -102,7 +102,7 @@ export default function CadContas() {
 
                     {/* Botões */}
                     <div className="flex justify-end gap-3 mt-8">
-                        <button className={Estilos.botaoOutline} onClick={() => navigate("/contas")}>
+                        <button className={Estilos.botaoOutline} onClick={() => navigate("/categorias")}>
                             <MdClose /> Cancelar
                         </button>
                         <button className={Estilos.botao} onClick={botaoSalvar}>

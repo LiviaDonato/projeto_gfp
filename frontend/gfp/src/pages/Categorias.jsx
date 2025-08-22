@@ -5,32 +5,14 @@ import { enderecoServidor } from "../utils"
 import { MdAdd, MdEdit, MdDelete, MdCreditCard, MdAccountBalance, MdEmail, MdFeaturedPlayList, MdAttachMoney, MdAutoGraph } from 'react-icons/md'
 import Estilos from "../styles/Estilos";
 
-export default function Contas() {
+export default function Categorias() {
     const navigate = useNavigate()
     const { dadosUsuario, setDadosUsuario, carregando } = useContext(UsuarioContext)
     const [dadosLista, setDadosLista] = useState([])
 
-    const iconesTipoConta = {
-        'CONTA_CORRENTE': <MdAccountBalance className="w-6 h-6" />,
-        'POUPANCA': <MdEmail className="w-6 h-6" />,
-        'CARTAO_CREDITO': <MdCreditCard className="w-6 h-6" />,
-        'CARTAO_DEBITO': <MdFeaturedPlayList className="w-6 h-6" />,
-        'DINHEIRO': <MdAttachMoney className="w-6 h-6" />,
-        'INVESTIMENTO': <MdAutoGraph className="w-6 h-6" />,
-    }
-    
-    const nomesTipoConta = {
-        'CONTA_CORRENTE': 'Conta Corrente',
-        'POUPANCA': 'Poupança',
-        'CARTAO_CREDITO': 'Cartão de Crédito',
-        'CARTAO_DEBITO': 'Cartão de Débito',
-        'DINHEIRO': 'Dinheiro',
-        'INVESTIMENTO': 'Investimento',
-    }
-
     const buscarDadosAPI = async () => {
         try {
-            const resposta = await fetch(`${enderecoServidor}/contas`, {
+            const resposta = await fetch(`${enderecoServidor}/categorias`, {
                 method: 'GET', headers: { 'Authorization': `Bearer ${dadosUsuario.token}` }
             })
             const dados = await resposta.json()
@@ -49,8 +31,8 @@ export default function Contas() {
 
     const botaoExcluir = async (id) => {
         try {
-            if (!window.confirm("Tem certeza que deseja excluir está conta?")) return
-            const resposta = await fetch(`${enderecoServidor}/contas/${id}`, {
+            if (!window.confirm("Tem certeza que deseja excluir está categoria?")) return
+            const resposta = await fetch(`${enderecoServidor}/categorias/${id}`, {
                 method: 'DELETE', headers: { 'Authorization': `Bearer ${dadosUsuario.token}` }
             })
             if (resposta.ok) {
@@ -65,15 +47,15 @@ export default function Contas() {
         return (
             <div key={item.id} className={Estilos.linhaListagem}>
                 <div className="p-2 bg-violet-100 text-violet-600 rounded-full">
-                    {iconesTipoConta[item.tipo_conta]}
+                    {}
                 </div>
                 <div className="flex-1 ml-4">
                     <p className="font-bold text-purple-900">{item.nome}</p>
-                    <p className="text-sm text-purple-800">{nomesTipoConta[item.tipo_conta]}</p>
+                    <p className="text-sm text-purple-800">0</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <button className={Estilos.botaoAlterar} onClick={() => navigate('/cadcontas', { state: {itemAlterar: item} })}><MdEdit className="h-6 w-6" /></button>
-                    <button className={Estilos.botaoExcluir} onClick={() => botaoExcluir(item.id_conta)}><MdDelete className="h-6 w-6" /></button>
+                    <button className={Estilos.botaoAlterar} onClick={() => navigate('/cadcategorias', { state: {itemAlterar: item} })}><MdEdit className="h-6 w-6" /></button>
+                    <button className={Estilos.botaoExcluir} onClick={() => botaoExcluir(item.id_categoria)}><MdDelete className="h-6 w-6" /></button>
                 </div>
             </div>
         )
@@ -81,15 +63,15 @@ export default function Contas() {
 
     return (
         <div>
-            <p className="text-3xl font-bold mb-6">Contas</p>
+            <p className="text-3xl font-bold mb-6">Categorias</p>
             <section className="bg-white p-4 rounded-lg shadow-md">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold text-violet-800">Gerenciar Contas</h3>
-                    <button onClick={() => navigate('/cadcontas')} className={Estilos.botaoCadastro}>
-                        <MdAdd className="h-8 w-8" /> Nova Conta
+                    <h3 className="text-xl font-bold text-violet-800">Gerenciar Categorias</h3>
+                    <button onClick={() => navigate('/cadcategorias')} className={Estilos.botaoCadastro}>
+                        <MdAdd className="h-8 w-8" /> Nova Categoria
                     </button>
                 </div>
-                {/* Lista das contas cadastradas */}
+                {/* Lista das categorias cadastradas */}
                 <section>
                     {dadosLista.map(item => exibirItemLista(item))}
                 </section>
