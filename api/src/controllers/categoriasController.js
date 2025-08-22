@@ -37,7 +37,7 @@ class CategoriasController {
         const { nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone } = req.body
 
         try {
-            const categorias = await Categorias.atualizarTodos(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria, cor, icone) // Chamar o metodo atualizar na model categoria
+            const categorias = await Categorias.atualizarTodos(nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone, id_categoria) // Chamar o metodo atualizar na model categoria
             return res.status(200).json(categorias) // Retorna a lista de categoria
         } catch(error) {
             return res.status(500).json({message: 'Erro ao atualizar todos as categorias', error: error.message})
@@ -49,7 +49,7 @@ class CategoriasController {
         const { nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone } = req.body
 
         try {
-            const categorias = await Categorias.atualizar(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria, cor, icone) // Chamar o metodo atualizar na model categoria
+            const categorias = await Categorias.atualizar(nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone, id_categoria) // Chamar o metodo atualizar na model categoria
             return res.status(200).json(categorias) // Retorna a lista de categoria
         } catch(error) {
             res.status(500).json({message: 'Erro ao atualizar as categorias', error: error.message})

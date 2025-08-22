@@ -1,51 +1,46 @@
-import React, { useState, useEffect } from "react"
-import { enderecoServidor } from "../utils"
+import React, { useState, useEffect, useContext } from "react";
+import { UsuarioContext } from "../UsuarioContext";
+import { enderecoServidor } from "../utils";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
+    const { setDadosUsuario } = useContext(UsuarioContext);
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
     const [lembrar, setLembrar] = useState(false);
 
     useEffect(() => {
         const buscarUsuarioLogado = async () => {
-            const UsuarioLogado = await localStorage.getItem("UsuarioLogado");
+            const UsuarioLogado = localStorage.getItem("UsuarioLogado");
             if (UsuarioLogado) {
                 const usuario = JSON.parse(UsuarioLogado);
                 if (usuario.lembrar === true) {
+                    setDadosUsuario(usuario);
                     navigate("/principal");
                 }
             }
         };
         buscarUsuarioLogado();
-    }, [[navigate]])
+    }, [navigate, setDadosUsuario]);
 
     async function botaoEntrar(e) {
-        e.preventDefault()
-
+        e.preventDefault();
         try {
-            if (email === '' || senha === '') {
-                throw new Error('Preencha todos os campos')
-            }
-
+            if (!email || !senha) throw new Error("Preencha todos os campos");
             const resposta = await fetch(`${enderecoServidor}/usuarios/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, senha })
-            })
-
-            if (resposta.ok) {
-                const dados = await resposta.json()
-                localStorage.setItem('UsuarioLogado', JSON.stringify({ ...dados, lembrar }))
-                navigate("/Principal")
-            } else {
-                throw new Error('Email ou senha incorretos')
-            }
-
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, senha }),
+            });
+            if (!resposta.ok) throw new Error("Email ou senha incorretos");
+            const dados = await resposta.json();
+            localStorage.setItem("UsuarioLogado", JSON.stringify({ ...dados, lembrar }));
+            setDadosUsuario(dados);
+            navigate("/principal");
         } catch (error) {
-            console.error('Erro ao realizar login:', error)
-            alert(error.message)
+            console.error("Erro ao realizar login:", error);
+            alert(error.message);
         }
     }
 
@@ -70,85 +65,128 @@ const Login = () => {
                         placeholder="Digite sua senha"
                         style={estilos.input}
                     />
-                    <label>
+                    <label style={estilos.checkboxLabel}>
                         <input
                             type="checkbox"
                             checked={lembrar}
                             onChange={(e) => setLembrar(e.target.checked)}
-                        />
+                            style={estilos.checkbox}
+                        />{" "}
                         Lembrar-me
                     </label>
                     <button onClick={botaoEntrar} style={estilos.botao}>Entrar</button>
                 </div>
             </div>
+
             <div style={estilos.metadeDireita}>
-                <h1 style={{ color: '#fff' }}>Bem-vindo à plataforma GFP!</h1>
+                <h1 style={estilos.bemVindo}>Bem-vindo à plataforma GFP!</h1>
+                {/* <img
+                    src=""
+                    alt="Financeiro e tecnologia"
+                    style={estilos.imagem}
+                /> */}
             </div>
         </div>
-    )
-}
+    );
+};
 
 const estilos = {
     container: {
-        display: 'flex',
-        flexDirection: 'row',
-        height: '100vh',
-        width: '100vw'
+        display: "flex",
+        flexDirection: "row",
+        height: "100vh",
+        width: "100vw",
+        background: "linear-gradient(to right, #6a6ab0, #25003d)",
     },
     metadeEsquerda: {
-        width: '60%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#663399'
+        flex: 1,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(102, 51, 153, 0.8)",
+        padding: "20px",
     },
     metadeDireita: {
-        width: '40%',
-        backgroundColor: '#25003d',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#fff",
+        textAlign: "center",
+        padding: "20px",
     },
     card: {
-        width: '100%',
-        maxWidth: '350px',
-        padding: '30px',
-        borderRadius: '12px',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        backgroundColor: '#fff',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px'
+        width: "100%",
+        maxWidth: "350px",
+        padding: "30px",
+        borderRadius: "12px",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.25)",
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px",
     },
     titulo: {
-        textAlign: 'center',
-        marginBottom: '10px',
-        color: '#6a6ab0',
-        fontSize: '35px'
+        fontSize: "36px",
+        color: "#6a6ab0",
+        marginBottom: "10px",
+        textAlign: "center",
     },
     input: {
-        height: '40px',
-        padding: '10 10px',
-        borderRadius: '6px',
-        border: '1px solid #ccc',
-        fontSize: '16px',
-        backgroundColor: '#E6E6FA'
+        height: "42px",
+        padding: "6px",
+        borderRadius: "6px",
+        fontSize: "16px",
+        border: "1px solid #ccc",
+        backgroundColor: "#E6E6FA",
+    },
+    checkboxLabel: {
+        fontSize: "14px",
+        color: "#333",
+    },
+    checkbox: {
+        marginRight: "8px",
     },
     botao: {
-        height: '40px',
-        backgroundColor: '#6a6ab0',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '6px',
-        fontWeight: 'bold',
-        cursor: 'pointer'
+        height: "50px",
+        backgroundColor: "#6a6ab0",
+        color: "#fff",
+        border: "none",
+        borderRadius: "6px",
+        fontSize: "18px",
+        fontWeight: "bold",
+        cursor: "pointer",
+        transition: "background-color 0.3s",
     },
-    mensagem: {
-        textAlign: 'center',
-        marginTop: '10px',
-        fontWeight: 'bold'
-    }
-}
+    botaoHover: {
+        backgroundColor: "#554aa0",
+    },
+    bemVindo: {
+        fontSize: "32px",
+        marginBottom: "20px",
+    },
+    imagem: {
+        maxWidth: "300px",
+        width: "100%",
+        borderRadius: "10px",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.35)",
+        marginTop: "15px",
+    },
+    // Responsividade mobile via media query (injetado globalmente, se preferir)
+    "@media (max-width: 768px)": {
+        container: {
+            flexDirection: "column",
+        },
+        metadeEsquerda: {
+            width: "100%",
+            height: "50%",
+        },
+        metadeDireita: {
+            width: "100%",
+            height: "50%",
+        },
+    },
+};
 
-export default Login
+export default Login;

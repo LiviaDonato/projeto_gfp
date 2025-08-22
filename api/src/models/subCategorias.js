@@ -1,4 +1,4 @@
-import { BD } from '../db.js'
+import { BD } from '../../db.js'
 
 class SubCategorias {
     // Função estatica para novo local de transacao

@@ -318,452 +318,448 @@ const swaggerDefinition = {
             },
 
         },
-        '/categorias': {
-            post: {
-                tags: ['Categorias'],
-                summary: 'Cadastrar nova categoria',
-                description: 'Rota para cadastrar nova categoria',
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                requestBody: {
-                    required: true,
-                    content: {
-                        'application/json': {
-                            schema: {
-                                type: 'object',
-                                required: ['nome', 'tipo_transacao', 'gasto_fixo', 'id_usuario', 'cor', 'icone'],
-                                properties: {
-                                    nome: {type: 'string', example: 'Alimentação'},
-                                    tipo_transacao: {type: 'string', example: 'ENTRADA'},
-                                    gasto_fixo: {type: 'boolean', example: true},
-                                    id_usuario: {type: 'integer', example: 6},
-                                    cor: {type: 'string', example: '#fff'},
-                                    icone: {type: 'string', example: 'save'}
-                                }
-                            }
-                        }
-                    }
-                },
-                responses: {
-                    '200': {
-                        description: 'Categorias cadastradas'
-                    },
-                    '400': {
-                        description: 'Erro ao cadastrar categoria'
-                    },
-                    '500': {
-                        description: 'Erro interno do servidor'
-                    }
-                }
-            },
-            get: {
-                tags: ['Categorias'],
-                summary: 'Listar todas as categorias',
-                description: 'Método utilizado para listar todas as categorias cadastradas',
-                security: [
-                    {
-                        bearerAuth: [],
-                    },
-                ],
-                responses: {
-                    '200': {
-                        description: 'Lista de categorias',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'array',
-                                    items: {
-                                        type: 'object',
-                                        properties: {
-                                            id_usuario: { type: 'integer', example: 1 },
-                                            nome: { type: 'string', example: 'João Silva' },
-                                            email: { type: 'string', example: 'joao@example.com' },
-                                            senha: { type: 'string', example: '123' },
-                                            tipo_acesso: { type: 'string', example: 'adm' },
-                                            ativo: { type: 'boolean', example: true },
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    '500': {
-                        description: 'Erro interno do servidor'
-                    }
-                }
-            }
-        },
-        '/categorias/{id_categoria}': {
-            get: {
-                tags: ['Categorias'],
-                summary: 'Consultar categoria',
-                description: 'Rota para consultar categoria',
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                parameters: [
-                    {
-                        name: 'id_categoria',
-                        in: 'path', // caso queira passar como query in: 'query'
-                        required: true,
-                        schema: {
-                            type: 'integer'
-                        }
-                    }
-                ],
-                responses: {
-                    '200': {
-                        description: 'categoria consultado com sucesso!'
-                    },
-                    '500': {
-                        description: 'Erro ao consultar categoria'
-                    }
-                }
-            },
-            put: {
-                tags: ['Categorias'],
-                summary: 'Atualizar todos os campos de categoria',
-                description: 'Rota para atualizar todos os campos de categoria',
-                requestBody: {
-                    required: true,
-                    content: {
-                        'application/json': {
-                            schema: {
-                                type: 'object',
-                                required: ['nome', 'email', 'senha', 'tipo_acesso'],
-                                properties: {
-                                    nome: { type: 'string', example: 'João Silva' },
-                                    email: { type: 'string', example: 'joao@example.com' },
-                                    senha: { type: 'string', example: '123' },
-                                    tipo_acesso: { type: 'string', example: 'adm' }
-                                }
-                            }
-                        }
-                    }
-                },
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                parameters: [
-                    {
-                        name: 'id_categoria',
-                        in: 'path', // caso queira passar como query in: 'query'
-                        required: true,
-                        schema: {
-                            type: 'integer'
-                        }
-                    }
-                ],
-                responses: {
-                    '200': {
-                        description: 'categoria atualizado com sucesso!'
-                    },
-                    '500': {
-                        description: 'Erro ao atualizar categoria'
-                    }
-                }
-            },
-            patch: {
-                tags: ['Categorias'],
-                summary: 'Atualizar categoria',
-                description: 'Rota para atualizar categoria',
-                requestBody: {
-                    required: true,
-                    content: {
-                        'application/json': {
-                            schema: {
-                                type: 'object',
-                                required: ['nome', 'email', 'senha', 'tipo_acesso'],
-                                properties: {
-                                    nome: { type: 'string', example: 'João Silva' }
-                                }
-                            }
-                        }
-                    }
-                },
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                parameters: [
-                    {
-                        name: 'id_categoria',
-                        in: 'path', // caso queira passar como query in: 'query'
-                        required: true,
-                        schema: {
-                            type: 'integer'
-                        }
-                    }
-                ],
-                responses: {
-                    '200': {
-                        description: 'categoria atualizado com sucesso!'
-                    },
-                    '500': {
-                        description: 'Erro ao atualizar categoria'
-                    }
-                }
-            },
-            delete: {
-                tags: ['Categorias'],
-                summary: 'Desativar categoria',
-                description: 'Rota para desativar categoria',
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                parameters: [
-                    {
-                        name: 'id_categoria',
-                        in: 'path', // caso queira passar como query in: 'query'
-                        required: true,
-                        schema: {
-                            type: 'integer'
-                        }
-                    }
-                ],
-                responses: {
-                    '200': {
-                        description: 'categoria desativado com sucesso!'
-                    },
-                    '500': {
-                        description: 'Erro ao desativar categoria'
-                    }
-                }
-            }
-        },
-        '/contas': {
-            post: {
-                tags: ['Contas'],
-                summary: 'Cadastrar nova conta',
-                description: 'Rota para cadastrar nova conta',
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                requestBody: {
-                    required: true,
-                    content: {
-                        'application/json': {
-                            schema: {
-                                type: 'object',
-                                required: [nome, tipo_conta, saldo, conta_padrao],
-                                properties: {
-                                    nome: {type: 'string', example: 'Alimentação'},
-                                    tipo_conta: {type: 'string', example: 'pix'},
-                                    saldo: {type: 'boolean', example: true},
-                                    id_usuario: {type: 'integer', example: 6},
-                                    cor: {type: 'string', example: '#fff'},
-                                    icone: {type: 'string', example: 'save'}
-                                }
-                            }
-                        }
-                    }
-                },
-                responses: {
-                    '200': {
-                        description: 'contas cadastradas'
-                    },
-                    '400': {
-                        description: 'Erro ao cadastrar conta'
-                    },
-                    '500': {
-                        description: 'Erro interno do servidor'
-                    }
-                }
-            },
-            get: {
-                tags: ['Contas'],
-                summary: 'Listar todas as contas',
-                description: 'Método utilizado para listar todas as contas cadastradas',
-                security: [
-                    {
-                        bearerAuth: [],
-                    },
-                ],
-                responses: {
-                    '200': {
-                        description: 'Lista de contas',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'array',
-                                    items: {
-                                        type: 'object',
-                                        properties: {
-                                            id_usuario: { type: 'integer', example: 1 },
-                                            nome: { type: 'string', example: 'João Silva' },
-                                            email: { type: 'string', example: 'joao@example.com' },
-                                            senha: { type: 'string', example: '123' },
-                                            tipo_acesso: { type: 'string', example: 'adm' },
-                                            ativo: { type: 'boolean', example: true },
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    '500': {
-                        description: 'Erro interno do servidor'
-                    }
-                }
-            }
-        },
-        '/contas/{id_conta}': {
-            get: {
-                tags: ['Contas'],
-                summary: 'Consultar conta',
-                description: 'Rota para consultar conta',
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                parameters: [
-                    {
-                        name: 'id_conta',
-                        in: 'path', // caso queira passar como query in: 'query'
-                        required: true,
-                        schema: {
-                            type: 'integer'
-                        }
-                    }
-                ],
-                responses: {
-                    '200': {
-                        description: 'conta consultado com sucesso!'
-                    },
-                    '500': {
-                        description: 'Erro ao consultar conta'
-                    }
-                }
-            },
-            put: {
-                tags: ['Contas'],
-                summary: 'Atualizar todos os campos de conta',
-                description: 'Rota para atualizar todos os campos de conta',
-                requestBody: {
-                    required: true,
-                    content: {
-                        'application/json': {
-                            schema: {
-                                type: 'object',
-                                required: ['nome', 'email', 'senha', 'tipo_acesso'],
-                                properties: {
-                                    nome: { type: 'string', example: 'João Silva' },
-                                    email: { type: 'string', example: 'joao@example.com' },
-                                    senha: { type: 'string', example: '123' },
-                                    tipo_acesso: { type: 'string', example: 'adm' }
-                                }
-                            }
-                        }
-                    }
-                },
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                parameters: [
-                    {
-                        name: 'id_conta',
-                        in: 'path', // caso queira passar como query in: 'query'
-                        required: true,
-                        schema: {
-                            type: 'integer'
-                        }
-                    }
-                ],
-                responses: {
-                    '200': {
-                        description: 'conta atualizado com sucesso!'
-                    },
-                    '500': {
-                        description: 'Erro ao atualizar conta'
-                    }
-                }
-            },
-            patch: {
-                tags: ['Contas'],
-                summary: 'Atualizar conta',
-                description: 'Rota para atualizar conta',
-                requestBody: {
-                    required: true,
-                    content: {
-                        'application/json': {
-                            schema: {
-                                type: 'object',
-                                required: ['nome', 'email', 'senha', 'tipo_acesso'],
-                                properties: {
-                                    nome: { type: 'string', example: 'João Silva' }
-                                }
-                            }
-                        }
-                    }
-                },
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                parameters: [
-                    {
-                        name: 'id_conta',
-                        in: 'path', // caso queira passar como query in: 'query'
-                        required: true,
-                        schema: {
-                            type: 'integer'
-                        }
-                    }
-                ],
-                responses: {
-                    '200': {
-                        description: 'conta atualizado com sucesso!'
-                    },
-                    '500': {
-                        description: 'Erro ao atualizar conta'
-                    }
-                }
-            },
-            delete: {
-                tags: ['Contas'],
-                summary: 'Desativar conta',
-                description: 'Rota para desativar conta',
-                security: [
-                    {
-                        bearerAuth: []
-                    }
-                ],
-                parameters: [
-                    {
-                        name: 'id_conta',
-                        in: 'path', // caso queira passar como query in: 'query'
-                        required: true,
-                        schema: {
-                            type: 'integer'
-                        }
-                    }
-                ],
-                responses: {
-                    '200': {
-                        description: 'conta desativado com sucesso!'
-                    },
-                    '500': {
-                        description: 'Erro ao desativar conta'
-                    }
-                }
-            }
-        }
+        // '/categorias': {
+        //     post: {
+        //         tags: ['Categorias'],
+        //         summary: 'Cadastrar nova categoria',
+        //         description: 'Rota para cadastrar nova categoria',
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         requestBody: {
+        //             required: true,
+        //             content: {
+        //                 'application/json': {
+        //                     schema: {
+        //                         type: 'object',
+        //                         required: ['nome', 'tipo_transacao', 'gasto_fixo', 'id_usuario', 'cor', 'icone'],
+        //                         properties: {
+        //                             nome: {type: 'string', example: 'Alimentação'},
+        //                             tipo_transacao: {type: 'string', example: 'ENTRADA'},
+        //                             gasto_fixo: {type: 'boolean', example: true},
+        //                             id_usuario: {type: 'integer', example: 6},
+        //                             cor: {type: 'string', example: '#fff'},
+        //                             icone: {type: 'string', example: 'save'}
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         responses: {
+        //             '200': {
+        //                 description: 'Categorias cadastradas'
+        //             },
+        //             '400': {
+        //                 description: 'Erro ao cadastrar categoria'
+        //             },
+        //             '500': {
+        //                 description: 'Erro interno do servidor'
+        //             }
+        //         }
+        //     },
+        //     get: {
+        //         tags: ['Categorias'],
+        //         summary: 'Listar todas as categorias',
+        //         description: 'Método utilizado para listar todas as categorias cadastradas',
+        //         security: [
+        //             {
+        //                 bearerAuth: [],
+        //             },
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'Lista de categorias',
+        //                 content: {
+        //                     'application/json': {
+        //                         schema: {
+        //                             type: 'array',
+        //                             items: {
+        //                                 type: 'object',
+        //                                 properties: {
+        //                                     id_usuario: { type: 'integer', example: 1 },
+        //                                     nome: { type: 'string', example: 'João Silva' },
+        //                                     email: { type: 'string', example: 'joao@example.com' },
+        //                                     senha: { type: 'string', example: '123' },
+        //                                     tipo_acesso: { type: 'string', example: 'adm' },
+        //                                     ativo: { type: 'boolean', example: true },
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             },
+        //             '500': {
+        //                 description: 'Erro interno do servidor'
+        //             }
+        //         }
+        //     }
+        // },
+        // '/categorias/{id_categoria}': {
+        //     get: {
+        //         tags: ['Categorias'],
+        //         summary: 'Consultar categoria',
+        //         description: 'Rota para consultar categoria',
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         parameters: [
+        //             {
+        //                 name: 'id_categoria',
+        //                 in: 'path', // caso queira passar como query in: 'query'
+        //                 required: true,
+        //                 schema: {
+        //                     type: 'integer'
+        //                 }
+        //             }
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'categoria consultado com sucesso!'
+        //             },
+        //             '500': {
+        //                 description: 'Erro ao consultar categoria'
+        //             }
+        //         }
+        //     },
+        //     put: {
+        //         tags: ['Categorias'],
+        //         summary: 'Atualizar todos os campos de categoria',
+        //         description: 'Rota para atualizar todos os campos de categoria',
+        //         requestBody: {
+        //             required: true,
+        //             content: {
+        //                 'application/json': {
+        //                     schema: {
+        //                         type: 'object',
+        //                         required: ['nome', 'email', 'senha', 'tipo_acesso'],
+        //                         properties: {
+        //                             nome: { type: 'string', example: 'João Silva' },
+        //                             email: { type: 'string', example: 'joao@example.com' },
+        //                             senha: { type: 'string', example: '123' },
+        //                             tipo_acesso: { type: 'string', example: 'adm' }
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         parameters: [
+        //             {
+        //                 name: 'id_categoria',
+        //                 in: 'path', // caso queira passar como query in: 'query'
+        //                 required: true,
+        //                 schema: {
+        //                     type: 'integer'
+        //                 }
+        //             }
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'categoria atualizado com sucesso!'
+        //             },
+        //             '500': {
+        //                 description: 'Erro ao atualizar categoria'
+        //             }
+        //         }
+        //     },
+        //     patch: {
+        //         tags: ['Categorias'],
+        //         summary: 'Atualizar categoria',
+        //         description: 'Rota para atualizar categoria',
+        //         requestBody: {
+        //             required: true,
+        //             content: {
+        //                 'application/json': {
+        //                     schema: {
+        //                         type: 'object',
+        //                         required: ['nome', 'email', 'senha', 'tipo_acesso'],
+        //                         properties: {
+        //                             nome: { type: 'string', example: 'João Silva' }
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         parameters: [
+        //             {
+        //                 name: 'id_categoria',
+        //                 in: 'path', // caso queira passar como query in: 'query'
+        //                 required: true,
+        //                 schema: {
+        //                     type: 'integer'
+        //                 }
+        //             }
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'categoria atualizado com sucesso!'
+        //             },
+        //             '500': {
+        //                 description: 'Erro ao atualizar categoria'
+        //             }
+        //         }
+        //     },
+        //     delete: {
+        //         tags: ['Categorias'],
+        //         summary: 'Desativar categoria',
+        //         description: 'Rota para desativar categoria',
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         parameters: [
+        //             {
+        //                 name: 'id_categoria',
+        //                 in: 'path', // caso queira passar como query in: 'query'
+        //                 required: true,
+        //                 schema: {
+        //                     type: 'integer'
+        //                 }
+        //             }
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'categoria desativado com sucesso!'
+        //             },
+        //             '500': {
+        //                 description: 'Erro ao desativar categoria'
+        //             }
+        //         }
+        //     }
+        // },
+        // '/contas': {
+        //     post: {
+        //         tags: ['Contas'],
+        //         summary: 'Cadastrar nova conta',
+        //         description: 'Rota para cadastrar nova conta',
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         requestBody: {
+        //             required: true,
+        //             content: {
+        //                 'application/json': {
+        //                     schema: {
+        //                         type: 'object',
+        //                         required: [nome, tipo_conta, saldo, conta_padrao],
+        //                         properties: {
+        //                             nome: {type: 'string', example: 'Alimentação'},
+        //                             tipo_conta: {type: 'string', example: 'pix'},
+        //                             saldo: {type: 'integer', example: 123},
+        //                             conta_padrao: {type: 'boolean', example: false},
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         responses: {
+        //             '200': {
+        //                 description: 'contas cadastradas'
+        //             },
+        //             '400': {
+        //                 description: 'Erro ao cadastrar conta'
+        //             },
+        //             '500': {
+        //                 description: 'Erro interno do servidor'
+        //             }
+        //         }
+        //     },
+        //     get: {
+        //         tags: ['Contas'],
+        //         summary: 'Listar todas as contas',
+        //         description: 'Método utilizado para listar todas as contas cadastradas',
+        //         security: [
+        //             {
+        //                 bearerAuth: [],
+        //             },
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'Lista de contas',
+        //                 content: {
+        //                     'application/json': {
+        //                         schema: {
+        //                             type: 'array',
+        //                             items: {
+        //                                 type: 'object',
+        //                                 properties: {
+        //                                     nome: {type: 'string', example: 'Alimentação'},
+        //                                     tipo_conta: {type: 'string', example: 'pix'},
+        //                                     saldo: {type: 'integer', example: 123},
+        //                                     conta_padrao: {type: 'boolean', example: false},
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             },
+        //             '500': {
+        //                 description: 'Erro interno do servidor'
+        //             }
+        //         }
+        //     }
+        // },
+        // '/contas/{id_conta}': {
+        //     get: {
+        //         tags: ['Contas'],
+        //         summary: 'Consultar conta',
+        //         description: 'Rota para consultar conta',
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         parameters: [
+        //             {
+        //                 name: 'id_conta',
+        //                 in: 'path', // caso queira passar como query in: 'query'
+        //                 required: true,
+        //                 schema: {
+        //                     type: 'integer'
+        //                 }
+        //             }
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'conta consultado com sucesso!'
+        //             },
+        //             '500': {
+        //                 description: 'Erro ao consultar conta'
+        //             }
+        //         }
+        //     },
+        //     put: {
+        //         tags: ['Contas'],
+        //         summary: 'Atualizar todos os campos de conta',
+        //         description: 'Rota para atualizar todos os campos de conta',
+        //         requestBody: {
+        //             required: true,
+        //             content: {
+        //                 'application/json': {
+        //                     schema: {
+        //                         type: 'object',
+        //                         required: [nome, tipo_conta, saldo, conta_padrao],
+        //                         properties: {
+        //                             nome: {type: 'string', example: 'Alimentação'},
+        //                             tipo_conta: {type: 'string', example: 'pix'},
+        //                             saldo: {type: 'integer', example: 123},
+        //                             conta_padrao: {type: 'boolean', example: false},
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         parameters: [
+        //             {
+        //                 name: 'id_conta',
+        //                 in: 'path', // caso queira passar como query in: 'query'
+        //                 required: true,
+        //                 schema: {
+        //                     type: 'integer'
+        //                 }
+        //             }
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'conta atualizado com sucesso!'
+        //             },
+        //             '500': {
+        //                 description: 'Erro ao atualizar conta'
+        //             }
+        //         }
+        //     },
+        //     patch: {
+        //         tags: ['Contas'],
+        //         summary: 'Atualizar conta',
+        //         description: 'Rota para atualizar conta',
+        //         requestBody: {
+        //             required: true,
+        //             content: {
+        //                 'application/json': {
+        //                     schema: {
+        //                         type: 'object',
+        //                         required: [nome, tipo_conta, saldo, conta_padrao],
+        //                         properties: {
+        //                             nome: { type: 'string', example: 'João Silva' }
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         parameters: [
+        //             {
+        //                 name: 'id_conta',
+        //                 in: 'path', // caso queira passar como query in: 'query'
+        //                 required: true,
+        //                 schema: {
+        //                     type: 'integer'
+        //                 }
+        //             }
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'conta atualizado com sucesso!'
+        //             },
+        //             '500': {
+        //                 description: 'Erro ao atualizar conta'
+        //             }
+        //         }
+        //     },
+        //     delete: {
+        //         tags: ['Contas'],
+        //         summary: 'Desativar conta',
+        //         description: 'Rota para desativar conta',
+        //         security: [
+        //             {
+        //                 bearerAuth: []
+        //             }
+        //         ],
+        //         parameters: [
+        //             {
+        //                 name: 'id_conta',
+        //                 in: 'path', // caso queira passar como query in: 'query'
+        //                 required: true,
+        //                 schema: {
+        //                     type: 'integer'
+        //                 }
+        //             }
+        //         ],
+        //         responses: {
+        //             '200': {
+        //                 description: 'conta desativado com sucesso!'
+        //             },
+        //             '500': {
+        //                 description: 'Erro ao desativar conta'
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
 

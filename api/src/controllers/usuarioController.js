@@ -1,4 +1,4 @@
-import { BD } from "../db.js"
+import { BD } from "../../db.js"
 import bcrypt from "bcrypt"
 import Usuario from "../models/usuario.js"
 import jwt from 'jsonwebtoken';

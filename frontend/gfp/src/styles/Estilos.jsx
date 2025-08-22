@@ -9,7 +9,11 @@ const Estilos = {
         flex: 1,
         width: '100%',
         backgroundColor: corFundo
-    }
+    },
+    botaoCadastro: 'sm:w-auto bg-purple-700 text-white px-4 py-2 rounded-lg hover:bg-purple-400 flex items-center justify-center shadow-sm transition-colors',
+    linhaListagem: 'flex items-center p-3 bg-violet-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow my-2',
+    botaoAlterar: 'flex items-center p-1 text-sky-700 bg-sky-100 hover:bg-sky-200 rounded-md transition-colors',
+    botaoExcluir: 'flex items-center p-1 text-red-700 bg-red-100 hover:bg-red-200 rounded-md transition-colors',
 }
 
 export default Estilos

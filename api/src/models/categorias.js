@@ -1,4 +1,4 @@
-import { BD } from '../db.js'
+import { BD } from '../../db.js'
 
 class Categorias {
     // Função estatica para novo local de transacao
@@ -8,19 +8,19 @@ class Categorias {
         return resultado.rows[0]
     }
     static async listar() {
-        const resultado = await BD.query('SELECT c.*, u.nome FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE c.ativo = true')
+        const resultado = await BD.query('SELECT c.*, u.nome as nome_usuario FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE c.ativo = true')
         return resultado.rows // retornar todos os local de transacao
     }
     static async consultar(id_categoria) {
         const resultado = await BD.query('SELECT c.*, u.nome FROM categorias as c LEFT JOIN usuarios as u ON c.id_usuario = u.id_usuario WHERE id_categoria = $1 AND c.ativo = true', [id_categoria])
         return resultado.rows
     }
-    static async atualizarTodos(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria, cor, icone) {
-        const resultado = await BD.query('UPDATE categorias SET nome = $1, tipo_transacao = $2, gasto_fixo = $3, id_usuario = $4, cor = $5, icone = $6 WHERE id_categoria = $5 RETURNING *',
-            [nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria, cor, icone]) // Comando SQL para atualizar o categoria
+    static async atualizarTodos(nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone, id_categoria) {
+        const resultado = await BD.query('UPDATE categorias SET nome = $1, tipo_transacao = $2, gasto_fixo = $3, id_usuario = $4, cor = $5, icone = $6 WHERE id_categoria = $7 RETURNING *',
+            [nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone, id_categoria]) // Comando SQL para atualizar o categoria
         return resultado.rows[0]
     }
-    static async atualizar(nome, tipo_transacao, gasto_fixo, id_usuario, id_categoria, cor, icone) {
+    static async atualizar(nome, tipo_transacao, gasto_fixo, id_usuario, cor, icone, id_categoria) {
         // Inicializar arrays(vetores) para armazenar os campos e vetores a serem atualizados
         const campos = []
         const valores = []

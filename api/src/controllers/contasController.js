@@ -67,12 +67,12 @@ class ContasController {
         }
     }
 
-        // filtar por tipo de conta
+    // filtar por tipo de conta
     static async filtrarConta(req, res) {
         const { nome } = req.query
         try {
-            const contas = await Contas.filtrar(nome) // Chamar o metodo deletar na model conta
-            return res.status(200).json(contas) // Retorna a lista de conta
+            const contas = await Contas.filtrar(nome) // Chamar o metodo filtrar na model conta
+            return res.status(200).json(contas) // Retorna a lista de contas
         } catch(error) {
             console.error('Erro ao filtrar conta', error)
             return res.status(500).json({message: 'Erro ao filtrar conta', error: error.message})

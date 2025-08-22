@@ -100,9 +100,9 @@ const Login = ({ navigation }) => {
           <Text style={{ color: "#ccc" }}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Acessar" color="#6a6ab0" onPress={botaoEntrar} />
-      </View>
+      <TouchableOpacity onPress={botaoEntrar} style={styles.buttonContainer}>
+        <Text style={styles.text}>Acessar</Text>
+      </TouchableOpacity>
     </LinearGradient>
   );
 };
@@ -113,9 +113,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+    pointerEvents: 'auto'
   },
   title: {
-    fontSize: 40,
+    fontSize: 60,
     marginBottom: 100,
     fontWeight: "bold",
     color: "#ccc",
@@ -132,14 +133,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ababd1",
     backgroundColor: "#ababd1",
-    padding: 12,
-    borderRadius: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    borderRadius: 16,
     marginBottom: 15,
   },
   buttonContainer: {
     marginTop: 20,
     width: "100%",
-  },
+    backgroundColor: '#ababd1',
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
 
 export default Login;
